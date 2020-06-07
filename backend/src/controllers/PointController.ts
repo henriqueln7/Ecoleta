@@ -4,7 +4,6 @@ import knex from "../database/connection";
 export default class PointController {
     static async index(request: Request, response: Response) {
         const { city, uf, items } = request.query;
-        console.log(city, uf, items);
         const parsedItems = String(items).split(',').map(item => Number(item.trim()));
 
         const points = await knex('points')
@@ -43,7 +42,7 @@ export default class PointController {
             const trx = await knex.transaction();
 
             const point = {
-                image: 'image-fake',
+                image: 'https://images.unsplash.com/flagged/photo-1588612005960-a382b1eca714?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=387&q=80',
                 name,
                 email,
                 whatsapp,
