@@ -1,4 +1,5 @@
 import {Request, Response} from "express";
+import Joi from '@hapi/joi';
 import knex from "../database/connection";
 
 export default class PointController {
@@ -49,6 +50,23 @@ export default class PointController {
 
     async create(request: Request, response: Response) {
         const {name, email, whatsapp, latitude, longitude, city, uf, items} = request.body;
+
+        const schema = Joi.object({
+            name: Joi.string().required(),
+            email: Joi.string().email().required(),
+            whatsapp: Joi.string().required(),
+            latitude: Joi.number().required(),
+            longitude: Joi.number().required(),
+            city: Joi.string().required(),
+            uf: Joi.string().required().max(2),
+            items: Joi.string().required(),
+        });
+
+        const { error } = schema.validate({name, email, whatsapp, latitude, longitude, city, uf, items});
+
+        if(error) {
+            return response.status(400).json(error);
+        }
 
         try {
 
